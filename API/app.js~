@@ -13,10 +13,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 
-//change the port number here
 var port=80;
 
-//Function to disable brute-force attacks
+
 var ExpressBrute = require('express-brute');
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
 var bruteforce = new ExpressBrute(store,{
@@ -24,13 +23,12 @@ var bruteforce = new ExpressBrute(store,{
     lifetime: 3600
 });
 
-//JSON url decoding
 app.use(serveStatic(__dirname));
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-
 
 app.all('*', function(req, res, next) 
 {
