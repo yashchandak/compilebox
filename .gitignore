@@ -1,3 +1,6 @@
+#temporary files
+API/temp/
+
 # Logs
 logs
 *.log

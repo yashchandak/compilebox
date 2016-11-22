@@ -9,7 +9,10 @@
 var express = require('express');
 var arr = require('./compilers');
 var sandBox = require('./DockerSandbox');
-var app = express.createServer();
+var app = express();
+var bodyParser = require('body-parser');
+var serveStatic = require('serve-static');
+
 var port=80;
 
 
@@ -20,8 +23,12 @@ var bruteforce = new ExpressBrute(store,{
     lifetime: 3600
 });
 
-app.use(express.static(__dirname));
-app.use(express.bodyParser());
+app.use(serveStatic(__dirname));
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.all('*', function(req, res, next) 
 {
@@ -38,7 +45,7 @@ function random(size) {
 }
 
 
-app.post('/compile',bruteforce.prevent,function(req, res) 
+app.post('/compile'/*,bruteforce.prevent*/,function(req, res) 
 {
 
     var language = req.body.language;
@@ -49,6 +56,12 @@ app.post('/compile',bruteforce.prevent,function(req, res)
     var path=__dirname+"/"; //current working path
     var vm_name='virtual_machine'; //name of virtual machine that we want to execute
     var timeout_value=20;//Timeout Value, In Seconds
+    console.log(req.body)
+    console.log(language);
+    console.log(code);
+    console.log(stdin);
+    //console.log(b.a);
+    //console.log(arr.compilerArray);
 
     //details of this are present in DockerSandbox.js
     var sandboxType = new sandBox(timeout_value,path,folder,vm_name,arr.compilerArray[language][0],arr.compilerArray[language][1],code,arr.compilerArray[language][2],arr.compilerArray[language][3],arr.compilerArray[language][4],stdin);
@@ -69,6 +82,11 @@ app.get('/', function(req, res)
 {
     res.sendfile("./index.html");
 });
+
+app.get('/codes', function(req, res)
+{
+	res.send(arr.compilerArray);
+})
 
 console.log("Listening at "+port)
 app.listen(port);

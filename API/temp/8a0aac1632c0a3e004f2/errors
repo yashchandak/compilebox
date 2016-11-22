@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/usercode/file.py", line 1, in <module>
+    n=int(input("number of days,"))
+  File "<string>", line 1, in <module>
+NameError: name 'hello' is not defined

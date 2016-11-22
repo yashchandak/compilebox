@@ -81,20 +81,20 @@ h3{
         var langid = $('#langid').val();
         var codeF = $('#code').val();
         var stdin = $('#stdin').val();
-	// passing the json file to the page 
+// passing the json file to the page 
         var json = {
             language: langid,
             code: codeF,
             stdin:stdin
         };
+	var a="Hello console.log(a);	console.log(a);
         console.log(json);
 
         $.post("/compile", json, function(data, error, xhr) {
 
-	document.getElementById("output").innerHTML = data.output;
+            document.getElementById("output").innerHTML = data.output;
         });
     });
-
 
     //RUN TESTS ON ALL LANGUAGES
     var langid_to_name = [];
